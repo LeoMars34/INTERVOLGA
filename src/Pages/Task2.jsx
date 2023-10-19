@@ -7,7 +7,7 @@ import { useEffect, useState } from 'react';
 export function Task2() {
     const [licensePlate, setLicensePlate] = useState();
     const [car, setCar] = useState();
-    const [dateAutoCome, setDateAutoCome] = useState();
+    const [arrivalDate, setarrivalDate] = useState();
     const [fio, setFio] = useState();
     const [series, setSeries] = useState();
     const [number, setNumber] = useState();
@@ -17,23 +17,25 @@ export function Task2() {
     useEffect(() => {
         setLicensePlate(localStorage.getItem('licensePlate'));
         setCar(localStorage.getItem('car'));
-        setDateAutoCome(localStorage.getItem('dateAutoCome'));
+        setarrivalDate(localStorage.getItem('arrivalDate'));
         setFio(localStorage.getItem('fio'));
         setSeries(localStorage.getItem('series'));
         setNumber(localStorage.getItem('number'));
         setDate(localStorage.getItem('date'));
         setIssued_by(localStorage.getItem('issued_by'));
     }, []);
-    console.log(licensePlate);
+
     const navigate = useNavigate();
     function backToMain() {
         navigate(-1);
     }
     function request() {
+        let error = false;
         document.querySelectorAll('.inputBox').forEach((i) => {
             if (i.firstChild.value !== '') {
                 i.classList.remove('red__border');
             } else {
+                error = true;
                 i.classList.add('red__border');
                 InfoPopUp(
                     'ПОЛЯ ОБЯЗАТЕЛЬНЫЕ ДЛЯ ЗАПОЛНЕНИЯ',
@@ -41,12 +43,16 @@ export function Task2() {
                 );
             }
             if (i.classList.contains('tomato__border')) {
-                InfoPopUp('ВВЕДЕНЫ НЕВЕРНЫЕ ДАННЫЕ', 'popup__Info_red');
+                error = true;
+                InfoPopUp('НЕВЕРНО ВНЕСЕНЫ ДАННЫЕ', 'popup__Info_red');
             }
         });
+        if (error) {
+            return;
+        }
         let licensePlate = document.getElementById('licensePlate').value;
         let car = document.getElementById('car').value;
-        let dateAutoCome = document.getElementById('dateAutoCome').value;
+        let arrivalDate = document.getElementById('arrivalDate').value;
         let fio = document.getElementById('fio').value;
         let series = document.getElementById('series').value;
         let number = document.getElementById('number').value;
@@ -54,7 +60,7 @@ export function Task2() {
         let issued_by = document.getElementById('issued_by').value;
         localStorage.setItem('licensePlate', licensePlate);
         localStorage.setItem('car', car);
-        localStorage.setItem('dateAutoCome', dateAutoCome);
+        localStorage.setItem('arrivalDate', arrivalDate);
         localStorage.setItem('fio', fio);
         localStorage.setItem('series', series);
         localStorage.setItem('number', number);
@@ -62,6 +68,7 @@ export function Task2() {
         localStorage.setItem('issued_by', issued_by);
         InfoPopUp('ФОРМА УСПЕШНО ОТПРАВЛЕНА', 'popup__Info_green');
     }
+
     return (
         <div className="p__task2">
             <div className="container__PopUp">
@@ -79,7 +86,7 @@ export function Task2() {
 
                     <Input value={car} id="car" name="Транспортное средство" />
                     <h6>Ориентировочная дата прибытия к покупателю</h6>
-                    <Input value={dateAutoCome} id="dateAutoCome" type="date" />
+                    <Input value={arrivalDate} id="arrivalDate" type="date" />
                     <h3 style={{ borderBottom: 'thick double var(--dark)' }}>
                         Данные о водителе
                     </h3>
